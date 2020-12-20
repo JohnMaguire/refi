@@ -11,9 +11,10 @@ original_loan_rate = 4.625
 original_loan_lifetime_years = 30
 original_loan_monthly_payment = 1491.16  # calculated if None
 new_loan = None  # defaults to original_loan_outstanding
-new_loan_rate = 3.091
-new_loan_lifetime_years = 30
+new_loan_rate = 2.125
+new_loan_lifetime_years = 15
 new_loan_closing_costs_rate = 3.0
+new_loan_include_closing_costs = True
 
 # Don't edit past this line!!!
 def monthly_payment(amount, rate, lifetime_months):
@@ -91,15 +92,30 @@ if __name__ == "__main__":
         original_loan_rate * 100,
         original_loan_monthly_payment,
     ))
-    assumptions_table.add_row("[bold white]New Loan[/bold white]", "${:,.2f} @ {:,.3f}% (Assuming ${:,.2f}/mo)".format(
-        new_loan,
-        new_loan_rate * 100,
-        new_loan_monthly_payment,
-    ))
-    assumptions_table.add_row("[bold white]New Loan Closing Costs[bold white]", "${:,.2f} (Assuming {:,.2f}%)".format(
-        new_loan_closing_costs,
-        new_loan_closing_costs_rate * 100,
-    ))
+    assumptions_table.add_row(
+        "[bold white]New Loan{}[/bold white]".format(
+            " (w/o closing costs" if new_loan_include_closing_costs else "",
+        ),
+        "${:,.2f} @ {:,.3f}% (Assuming ${:,.2f}/mo)".format(
+            new_loan,
+            new_loan_rate * 100,
+            new_loan_monthly_payment,
+        ))
+    assumptions_table.add_row(
+        "[bold white]New Loan Closing Costs[bold white]",
+        "${:,.2f} (Assuming {:,.2f}%)".format(
+            new_loan_closing_costs,
+            new_loan_closing_costs_rate * 100,
+        ))
+    if new_loan_include_closing_costs:
+        new_loan = new_loan + new_loan_closing_costs
+        assumptions_table.add_row(
+            "[bold white]New Loan (w/ closing costs)[/bold white]",
+            "${:,.2f} @ {:,.3f}% (Assuming ${:,.2f}/mo)".format(
+                new_loan,
+                new_loan_rate * 100,
+                new_loan_monthly_payment,
+            ))
 
     original_loan_table = amoritization_schedule_table(
         "Original Loan Amoritization",
