@@ -82,37 +82,38 @@ original_loan_monthly_payment = original_loan_monthly_payment or \
         original_loan_lifetime_months,
     )
 
-console = Console()
+if __name__ == "__main__":
+    console = Console()
 
-assumptions_table = Table(title="Assumptions", show_header=False)
-assumptions_table.add_row("[bold white]Original Loan[/bold white]", "${:,.2f} @ {:,.3f}% (${:,.2f}/mo)".format(
-    original_loan,
-    original_loan_rate * 100,
-    original_loan_monthly_payment,
-))
-assumptions_table.add_row("[bold white]New Loan[/bold white]", "${:,.2f} @ {:,.3f}% (Assuming ${:,.2f}/mo)".format(
-    new_loan,
-    new_loan_rate * 100,
-    new_loan_monthly_payment,
-))
-assumptions_table.add_row("[bold white]New Loan Closing Costs[bold white]", "${:,.2f} (Assuming {:,.2f}%)".format(
-    new_loan_closing_costs,
-    new_loan_closing_costs_rate * 100,
-))
+    assumptions_table = Table(title="Assumptions", show_header=False)
+    assumptions_table.add_row("[bold white]Original Loan[/bold white]", "${:,.2f} @ {:,.3f}% (${:,.2f}/mo)".format(
+        original_loan,
+        original_loan_rate * 100,
+        original_loan_monthly_payment,
+    ))
+    assumptions_table.add_row("[bold white]New Loan[/bold white]", "${:,.2f} @ {:,.3f}% (Assuming ${:,.2f}/mo)".format(
+        new_loan,
+        new_loan_rate * 100,
+        new_loan_monthly_payment,
+    ))
+    assumptions_table.add_row("[bold white]New Loan Closing Costs[bold white]", "${:,.2f} (Assuming {:,.2f}%)".format(
+        new_loan_closing_costs,
+        new_loan_closing_costs_rate * 100,
+    ))
 
-original_loan_table = amoritization_schedule_table(
-    "Original Loan Amoritization",
-    original_loan_outstanding,
-    original_loan_rate,
-    original_loan_monthly_payment,
-)
+    original_loan_table = amoritization_schedule_table(
+        "Original Loan Amoritization",
+        original_loan_outstanding,
+        original_loan_rate,
+        original_loan_monthly_payment,
+    )
 
-new_loan_table = amoritization_schedule_table(
-    "New Loan Amoritization",
-    new_loan,
-    new_loan_rate,
-    new_loan_monthly_payment,
-)
+    new_loan_table = amoritization_schedule_table(
+        "New Loan Amoritization",
+        new_loan,
+        new_loan_rate,
+        new_loan_monthly_payment,
+    )
 
-console.print(assumptions_table)
-console.print(Columns([original_loan_table, new_loan_table]))
+    console.print(assumptions_table)
+    console.print(Columns([original_loan_table, new_loan_table]))
